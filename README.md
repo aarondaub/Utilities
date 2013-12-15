@@ -1,4 +1,4 @@
 Utilities
 =========
 
-Utilities for make working with Foundation a little bit better
+Utilities for make working with the iOS SDK a little bit better
