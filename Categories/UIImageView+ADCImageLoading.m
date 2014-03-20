@@ -112,7 +112,7 @@
     if(shouldCache && URL && image){
         [[[self class] IL_inMemoryCache] setObject:image forKey:URL];
         [[[self class] IL_fileIOQueue] addOperationWithBlock:^{
-            if(data){
+            if(imageData){
                 BOOL cached = [imageData writeToURL:[self IL_localURLForRemoteURL:URL] atomically:YES];
                 if(cached){
                     // Debugging hook...
