@@ -54,7 +54,7 @@
             [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:URL] queue:[[self class] IL_networkQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
                 if(!connectionError && data){
                     UIImage* image = [self IL_transformDataIntoImage:data block:dataToImageBlock];
-                    [self IL_cacheImage:image forURL:URL shouldCache:shouldCache];
+                    [self IL_cacheImage:image imageData:data forURL:URL shouldCache:shouldCache];
                     UIImage* finalizedImage = [self IL_processImage:image withBlock:processingHandler];
                     if ([self IL_validateImage:finalizedImage withBlock:validityHandler] && completionHandler) {
                         [self IL_performCompletionHandler:completionHandler successful:YES imageWasInMemory:NO imageWasOnDisk:NO image:finalizedImage];
@@ -108,13 +108,16 @@
     return [NSURL fileURLWithPath:cachePath];
 }
 
-- (void)IL_cacheImage:(UIImage*)image forURL:(NSURL*)URL shouldCache:(BOOL)shouldCache{
+- (void)IL_cacheImage:(UIImage*)image imageData:(NSData*)imageData forURL:(NSURL*)URL shouldCache:(BOOL)shouldCache{
     if(shouldCache && URL && image){
         [[[self class] IL_inMemoryCache] setObject:image forKey:URL];
         [[[self class] IL_fileIOQueue] addOperationWithBlock:^{
-            NSData* imageJPGData = UIImageJPEGRepresentation(image, 0.0f);
-           BOOL cached = [imageJPGData writeToURL:[self IL_localURLForRemoteURL:URL] atomically:YES];
-            NSLog(@"");
+            if(data){
+                BOOL cached = [imageData writeToURL:[self IL_localURLForRemoteURL:URL] atomically:YES];
+                if(cached){
+                    // Debugging hook...
+                }
+            }
         }];
     }
 }
