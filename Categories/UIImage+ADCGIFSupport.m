@@ -29,7 +29,7 @@
     
     for(size_t i = 0; i < numberOfFrames; i++){
         NSDictionary* imageProperties = (__bridge_transfer NSDictionary*)(CGImageSourceCopyPropertiesAtIndex(imageSourceRef, i, NULL));
-        NSNumber* frameDurationNumber = imageProperties[(__bridge NSString*)kCGImagePropertyGIFDictionary][(__bridge NSString*)kCGImagePropertyGIFDictionary];
+        NSNumber* frameDurationNumber = imageProperties[(__bridge NSString*)kCGImagePropertyGIFDictionary][(__bridge NSString*)kCGImagePropertyGIFDelayTime];
         
         animationDuration += frameDurationNumber.floatValue;
         
