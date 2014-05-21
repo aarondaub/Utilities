@@ -85,6 +85,14 @@
     return nil;
 }
 
+- (void)doesNotRecognizeSelector:(SEL)aSelector{
+  if(![self forwardingTargetForSelector:aSelector]){
+    return;
+  }
+  
+  [super doesNotRecognizeSelector:aSelector];
+}
+
 - (BOOL)isObjectACollection:(id)object{
     return ([object respondsToSelector:@selector(objectAtIndexedSubscript:)] || [object respondsToSelector:@selector(objectForKeyedSubscript:)]);
 }
